@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"gg/src/data/getter"
 	"gg/src/model/user"
 	"gg/src/result"
 	"github.com/gin-gonic/gin"
@@ -21,4 +22,16 @@ func UserAdd(ctx *gin.Context) {
 	} else {
 		R(ctx)("fail", 10001, nil)(Error)
 	}
+}
+
+func UserList(ctx *gin.Context) {
+	R(ctx)("ok", 0, getter.UserGetter.List())(OK)
+}
+
+func UserInfo(ctx *gin.Context) {
+	id := &struct {
+		ID int `uri:"id" binding:"required,gt=0"`
+	}{}
+	result.Result(ctx.ShouldBindUri(id)).Unwrap()
+	R(ctx)("ok", 0, getter.UserGetter.Show(id.ID).Unwrap())(OK)
 }
