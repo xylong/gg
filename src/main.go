@@ -4,6 +4,7 @@ import (
 	"gg/src/common"
 	"gg/src/model/user"
 	"gg/src/result"
+	"gg/src/test"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +18,13 @@ func main() {
 	r.POST("/user", func(c *gin.Context) {
 		u := user.NewUser()
 		result.Result(c.ShouldBind(u)).Unwrap()
-		c.JSON(200, gin.H{"msg": "ok"})
+		c.JSON(200, gin.H{"msg": "ok", "data": u})
+	})
+	r.POST("/test", func(c *gin.Context) {
+		u := user.NewUser()
+		result.Result(c.ShouldBind(u)).Unwrap()
+		info := result.Result(test.GetInfo(u.ID)).Unwrap()
+		c.JSON(200, info)
 	})
 	r.Run()
 }
