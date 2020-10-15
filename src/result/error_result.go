@@ -2,6 +2,7 @@ package result
 
 import (
 	"fmt"
+	"gg/src/validator"
 )
 
 type ErrorResult struct {
@@ -11,6 +12,7 @@ type ErrorResult struct {
 
 func (r *ErrorResult) Unwrap() interface{} {
 	if r.err != nil {
+		validator.CheckErrors(r.err)
 		panic(r.err.Error())
 	}
 	return r.data
