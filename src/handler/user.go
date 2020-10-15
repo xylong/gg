@@ -17,7 +17,8 @@ func UserAdd(ctx *gin.Context) {
 	result.Result(ctx.ShouldBind(u)).Unwrap()
 	//info := result.Result(test.GetInfo(u.ID)).Unwrap()
 
-	if u.ID > 10 {
+	u.Mutate(user.WithId(1))
+	if u.ID > 0 {
 		R(ctx)("ok", 0, u)(OK)
 	} else {
 		R(ctx)("fail", 10001, nil)(Error)
